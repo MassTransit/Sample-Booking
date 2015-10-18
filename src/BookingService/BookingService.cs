@@ -7,6 +7,7 @@
     using Booking.Services;
     using MassTransit;
     using MassTransit.Courier;
+    using MassTransit.Util;
     using Topshelf;
     using Topshelf.Logging;
 
@@ -56,6 +57,8 @@
             _log.Info("Starting bus...");
 
             _busHandle = _busControl.Start();
+
+            TaskUtil.Await(() => _busHandle.Ready);
 
             return true;
         }

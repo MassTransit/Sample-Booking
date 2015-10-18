@@ -9,6 +9,8 @@ Gemfile.lock
 
 *.ncrunch*
 
+.vs
+
 src/logs/*
 
 bin

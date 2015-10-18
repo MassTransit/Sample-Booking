@@ -11,6 +11,11 @@
         Guid BookingRequestId { get; }
 
         /// <summary>
+        /// The timestamp of the booking request
+        /// </summary>
+        DateTime Timestamp { get; }
+
+        /// <summary>
         /// The email address of the booking party
         /// </summary>
         string EmailAddress { get; }

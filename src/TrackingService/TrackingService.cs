@@ -8,6 +8,7 @@
     using MassTransit.EntityFrameworkIntegration;
     using MassTransit.EntityFrameworkIntegration.Saga;
     using MassTransit.Saga;
+    using MassTransit.Util;
     using Topshelf;
     using Topshelf.Logging;
 
@@ -57,6 +58,8 @@
 
             _busHandle = _busControl.Start();
 
+            TaskUtil.Await(() => _busHandle.Ready);
+
             return true;
         }
 
@@ -71,8 +74,7 @@
 
         ISagaRepository<BookingRequestState> GetSagaRepository()
         {
-            _sagaDbContextFactory = () =>
-                new SagaDbContext<BookingRequestState, BookingRequestStateMap>(SagaDbContextFactoryProvider.GetLocalDbConnectionString());
+            _sagaDbContextFactory = () => new SagaDbContext<BookingRequestState, BookingRequestStateMap>(LocalDatabaseSelector.ConnectionString);
 
             return new EntityFrameworkSagaRepository<BookingRequestState>(_sagaDbContextFactory);
         }

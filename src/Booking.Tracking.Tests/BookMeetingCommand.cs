@@ -14,9 +14,13 @@ namespace Booking.Tracking.Tests
             StartTime = startTime;
             Duration = duration;
             RoomCapacity = roomCapacity;
+
+            Timestamp = DateTime.UtcNow;
         }
 
         public Guid BookingRequestId { get; }
+
+        public DateTime Timestamp { get; }
 
         public string EmailAddress { get; }
 

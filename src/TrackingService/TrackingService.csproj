@@ -103,7 +103,7 @@
     <Compile Include="BookingRequestStateMap.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SagaDbContextFactoryProvider.cs" />
+    <Compile Include="LocalDatabaseSelector.cs" />
     <Compile Include="TrackingService.cs" />
   </ItemGroup>
   <ItemGroup>
