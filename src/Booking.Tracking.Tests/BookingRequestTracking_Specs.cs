@@ -3,12 +3,14 @@
     using System;
     using System.Threading.Tasks;
     using Automatonymous;
+    using Contracts.Commands;
     using Contracts.Events;
     using MassTransit;
     using MassTransit.Saga;
     using MassTransit.TestFramework;
     using NUnit.Framework;
     using Tracking;
+    using Tracking.Tests;
 
 
     [TestFixture]
@@ -20,7 +22,8 @@
         {
             Guid sagaId = NewId.NextGuid();
 
-            await Bus.Publish(new RequestReceived(sagaId, DateTime.UtcNow));
+            var command = new BookMeetingCommand(sagaId, "chris@phatboyg.com", new DateTime(2016, 10, 1, 14, 0, 0), TimeSpan.FromHours(1), 8);
+            await Bus.Publish(new RequestReceived(sagaId, command));
 
             Guid? foundSagaId = await _bookingRequestSagaRepository.ShouldContainSaga(sagaId, TestTimeout);
 
@@ -32,14 +35,17 @@
         public class RequestReceived :
             BookingRequestReceived
         {
-            public RequestReceived(Guid bookingRequestId, DateTime timestamp)
+            public RequestReceived(Guid bookingRequestId, BookMeeting request)
             {
                 BookingRequestId = bookingRequestId;
-                Timestamp = timestamp;
+                Timestamp = DateTime.UtcNow;
+                Request = request;
             }
 
             public Guid BookingRequestId { get; }
             public DateTime Timestamp { get; }
+
+            public BookMeeting Request { get; }
         }
 
 

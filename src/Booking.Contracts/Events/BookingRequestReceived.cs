@@ -1,12 +1,16 @@
 ﻿namespace Booking.Contracts.Events
 {
     using System;
+    using Commands;
 
 
     public interface BookingRequestReceived
     {
-        Guid BookingRequestId { get; }
-
         DateTime Timestamp { get; }
+
+        /// <summary>
+        /// The actual meeting request
+        /// </summary>
+        BookMeeting Request { get; }
     }
 }

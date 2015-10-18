@@ -6,6 +6,11 @@
     public interface BookMeeting
     {
         /// <summary>
+        /// Uniquely identifies the booking request
+        /// </summary>
+        Guid BookingRequestId { get; }
+
+        /// <summary>
         /// The email address of the booking party
         /// </summary>
         string EmailAddress { get; }
