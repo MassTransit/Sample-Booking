@@ -10,11 +10,14 @@
 
 
     public class BookController :
-        ApiController
+        EnhancedApiController
     {
         // POST api/book
-        public async Task<BookingRequestResult> Post(BookingRequestModel model)
+        public async Task<IHttpActionResult> Post(BookingRequestModel model)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (model.BookingRequestId == Guid.Empty)
                 model.BookingRequestId = NewId.NextGuid();
 
@@ -22,24 +25,24 @@
 
             var endpoint = await WebApiApplication.Bus.GetSendEndpoint(new Uri(address));
 
-            var request = new Request(model);
+            var request = new BookMeetingCommand(model);
 
             await endpoint.Send(request);
 
-            return new BookingRequestResult
+            return Accepted(new BookingRequestResult
             {
                 BookingRequestId = model.BookingRequestId,
                 Timestamp = request.Timestamp
-            };
+            });
         }
 
 
-        class Request :
+        class BookMeetingCommand :
             BookMeeting
         {
             readonly BookingRequestModel _model;
 
-            public Request(BookingRequestModel model)
+            public BookMeetingCommand(BookingRequestModel model)
             {
                 _model = model;
 
