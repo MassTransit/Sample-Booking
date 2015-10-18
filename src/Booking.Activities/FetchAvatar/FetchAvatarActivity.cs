@@ -7,6 +7,7 @@
     using System.Text;
     using System.Threading.Tasks;
     using Contracts;
+    using Contracts.Events;
     using MassTransit.Courier;
     using MassTransit.Courier.Exceptions;
 
@@ -48,7 +49,7 @@
                     });
                 }
 
-                await context.Publish<BookingRequestNotProcessed>(new RequestNotProcessed(context.Arguments, ReasonCodes.AvatarNotFound.Code,
+                await context.Publish<BookingRequestNotAccepted>(new RequestNotAccepted(context.Arguments, ReasonCodes.AvatarNotFound.Code,
                     $"Avatar not found: {emailAddress}"));
 
                 return context.Terminate();
@@ -87,12 +88,12 @@
         }
 
 
-        class RequestNotProcessed :
-            BookingRequestNotProcessed
+        class RequestNotAccepted :
+            BookingRequestNotAccepted
         {
             readonly FetchAvatarArguments _arguments;
 
-            public RequestNotProcessed(FetchAvatarArguments arguments, int reasonCode, string reasonText)
+            public RequestNotAccepted(FetchAvatarArguments arguments, int reasonCode, string reasonText)
             {
                 _arguments = arguments;
                 ReasonCode = reasonCode;

@@ -1,4 +1,4 @@
-﻿namespace Booking.Contracts
+﻿namespace Booking.Contracts.Commands
 {
     using System;
 
