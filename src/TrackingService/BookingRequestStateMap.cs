@@ -10,7 +10,6 @@
         public BookingRequestStateMap()
         {
             Property(x => x.State);
-            Property(x => x.CorrelationId);
 
             Property(x => x.CreateTime);
             Property(x => x.UpdateTime);

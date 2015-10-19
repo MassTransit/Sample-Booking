@@ -91,14 +91,11 @@
             {
                 FetchAvatarActivityName = ConfigurationManager.AppSettings["FetchAvatarActivityName"];
                 FetchAvatarExecuteAddress = new Uri(ConfigurationManager.AppSettings["FetchAvatarExecuteAddress"]);
-                RoutingSlipEventSubscriptionAddress = new Uri(ConfigurationManager.AppSettings["RoutingSlipEventSubscriptionAddress"]);
             }
 
             public string FetchAvatarActivityName { get; }
 
             public Uri FetchAvatarExecuteAddress { get; }
-
-            public Uri RoutingSlipEventSubscriptionAddress { get; }
         }
 
 
@@ -108,6 +105,8 @@
             public FetchAvatarSettings()
             {
                 CacheFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "avatars");
+
+                Directory.CreateDirectory(CacheFolderPath);
             }
 
             public string CacheFolderPath { get; }

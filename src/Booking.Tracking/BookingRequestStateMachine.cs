@@ -20,6 +20,13 @@
                 x.SetSagaFactory(context => CreateBookingRequestState(context.Message.Timestamp, context.Message.Request));
             });
 
+            Event(() => RequestRedelivered, x =>
+            {
+                x.CorrelateById(context => context.Message.Request.BookingRequestId);
+                x.InsertOnInitial = true;
+                x.SetSagaFactory(context => CreateBookingRequestState(context.Message.Timestamp, context.Message.Request));
+            });
+
             Initially(
                 When(RequestReceived)
                     .Then(context => context.Instance.ReceiveTime = context.Data.Timestamp)
@@ -43,6 +50,7 @@
         {
             return new BookingRequestState
             {
+                CorrelationId = request.BookingRequestId,
                 CreateTime = timestamp,
                 UpdateTime = timestamp,
                 EmailAddress = request.EmailAddress,

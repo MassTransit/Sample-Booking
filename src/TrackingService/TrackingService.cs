@@ -2,6 +2,7 @@
 {
     using System;
     using System.Configuration;
+    using System.Data.Entity;
     using Automatonymous;
     using Booking.Tracking;
     using MassTransit;
@@ -35,10 +36,7 @@
 
             _sagaRepository = GetSagaRepository();
 
-            using (var context = _sagaDbContextFactory())
-            {
-                context.Database.CreateIfNotExists();
-            }
+            ITrackingEventWriter writer = GetTrackingEventWriter();
 
             _busControl = Bus.Factory.CreateUsingRabbitMq(x =>
             {
@@ -51,6 +49,11 @@
                 x.ReceiveEndpoint(host, ConfigurationManager.AppSettings["BookingStateQueueName"], e =>
                 {
                     e.StateMachineSaga(_stateMachine, _sagaRepository);
+                });
+
+                x.ReceiveEndpoint(host, ConfigurationManager.AppSettings["EventTrackingQueueName"], e =>
+                {
+                    e.Consumer(() => new EventTrackingConsumer(writer));
                 });
             });
 
@@ -76,7 +79,24 @@
         {
             _sagaDbContextFactory = () => new SagaDbContext<BookingRequestState, BookingRequestStateMap>(LocalDatabaseSelector.ConnectionString);
 
+            using (var context = _sagaDbContextFactory())
+            {
+                context.Database.CreateIfNotExists();
+            }
+
             return new EntityFrameworkSagaRepository<BookingRequestState>(_sagaDbContextFactory);
+        }
+
+        ITrackingEventWriter GetTrackingEventWriter()
+        {
+            Func<DbContext> contextProvider = () => new TrackingEventDbContext(LocalDatabaseSelector.ConnectionString);
+
+            using (var context = contextProvider())
+            {
+                context.Database.CreateIfNotExists();
+            }
+
+            return new EntityFrameworkTrackingEventWriter(contextProvider);
         }
 
         static Uri GetHostAddress()

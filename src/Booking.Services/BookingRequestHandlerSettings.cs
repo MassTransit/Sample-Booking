@@ -16,10 +16,5 @@ namespace Booking.Services
         /// The execute address of the activity for the routing slip
         /// </summary>
         Uri FetchAvatarExecuteAddress { get; }
-
-        /// <summary>
-        /// The address where routing slip events should be sent
-        /// </summary>
-        Uri RoutingSlipEventSubscriptionAddress { get; }
     }
 }

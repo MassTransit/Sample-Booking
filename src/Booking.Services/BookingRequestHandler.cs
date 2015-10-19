@@ -4,7 +4,6 @@
     using Contracts.Commands;
     using MassTransit;
     using MassTransit.Courier;
-    using MassTransit.Courier.Contracts;
 
 
     public class BookingRequestHandler :
@@ -30,8 +29,6 @@
                 context.Message.Duration,
                 context.Message.RoomCapacity
             });
-
-            builder.AddSubscription(_settings.RoutingSlipEventSubscriptionAddress, RoutingSlipEvents.Completed | RoutingSlipEvents.Faulted);
 
             var routingSlip = builder.Build();
 

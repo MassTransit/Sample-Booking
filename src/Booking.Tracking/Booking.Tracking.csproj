@@ -57,7 +57,10 @@
   <ItemGroup>
     <Compile Include="BookingRequestState.cs" />
     <Compile Include="BookingRequestStateMachine.cs" />
+    <Compile Include="EventTrackingConsumer.cs" />
+    <Compile Include="ITrackingEventWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackingEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
