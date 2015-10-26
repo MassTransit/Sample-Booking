@@ -32,6 +32,8 @@
             var avatarAddress = GetAvatarAddress(avatarName);
             var avatarFileName = Path.Combine(_settings.CacheFolderPath, $"{avatarName}.jpg");
 
+            await Console.Out.WriteLineAsync($"Fetching avatar {avatarName}");
+
             using (var httpClient = new HttpClient())
             {
                 var request = await httpClient.GetAsync(avatarAddress);

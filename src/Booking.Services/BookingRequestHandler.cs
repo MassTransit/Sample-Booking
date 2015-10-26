@@ -20,6 +20,12 @@
         {
             var builder = new RoutingSlipBuilder(NewId.NextGuid());
 
+            builder.AddActivity(_settings.ReserveRoomActivityName,
+                _settings.ReserveRoomExecuteAddress, new
+                {
+                    ReservationApiKey = "secret"
+                });
+
             builder.AddActivity(_settings.FetchAvatarActivityName, _settings.FetchAvatarExecuteAddress);
 
             builder.SetVariables(new

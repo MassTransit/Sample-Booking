@@ -51,6 +51,9 @@
     <Compile Include="FetchAvatar\FetchAvatarActivitySettings.cs" />
     <Compile Include="FetchAvatar\FetchAvatarArguments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReserveRoom\ReserveRoomActivity.cs" />
+    <Compile Include="ReserveRoom\ReserveRoomArguments.cs" />
+    <Compile Include="ReserveRoom\ReserveRoomLog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

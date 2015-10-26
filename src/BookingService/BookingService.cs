@@ -4,6 +4,7 @@
     using System.Configuration;
     using System.IO;
     using Booking.Activities.FetchAvatar;
+    using Booking.Activities.ReserveRoom;
     using Booking.Services;
     using MassTransit;
     using MassTransit.Courier;
@@ -52,6 +53,18 @@
                 {
                     e.ExecuteActivityHost<FetchAvatarActivity, FetchAvatarArguments>(() => new FetchAvatarActivity(_fetchAvatarActivitySettings));
                 });
+
+                x.ReceiveEndpoint(host, ConfigurationManager.AppSettings["ReserveRoomCompensateQueue"], c =>
+                {
+                    var compensateAddress = c.InputAddress;
+
+                    c.ExecuteActivityHost<ReserveRoomActivity, ReserveRoomArguments>();
+
+                    x.ReceiveEndpoint(host, ConfigurationManager.AppSettings["ReserveRoomExecuteQueue"], e =>
+                    {
+                        e.ExecuteActivityHost<ReserveRoomActivity, ReserveRoomArguments>(compensateAddress);
+                    });
+                });
             });
 
             _log.Info("Starting bus...");
@@ -91,11 +104,15 @@
             {
                 FetchAvatarActivityName = ConfigurationManager.AppSettings["FetchAvatarActivityName"];
                 FetchAvatarExecuteAddress = new Uri(ConfigurationManager.AppSettings["FetchAvatarExecuteAddress"]);
+                ReserveRoomActivityName = ConfigurationManager.AppSettings["ReserveRoomActivityName"];
+                ReserveRoomExecuteAddress = new Uri(ConfigurationManager.AppSettings["ReserveRoomExecuteAddress"]);
             }
 
             public string FetchAvatarActivityName { get; }
 
             public Uri FetchAvatarExecuteAddress { get; }
+            public string ReserveRoomActivityName { get; }
+            public Uri ReserveRoomExecuteAddress { get; }
         }
 
 

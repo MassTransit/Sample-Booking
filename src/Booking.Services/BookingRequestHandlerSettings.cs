@@ -16,5 +16,15 @@ namespace Booking.Services
         /// The execute address of the activity for the routing slip
         /// </summary>
         Uri FetchAvatarExecuteAddress { get; }
+
+        /// <summary>
+        /// The name of the reserve room activity
+        /// </summary>
+        string ReserveRoomActivityName { get; }
+
+        /// <summary>
+        /// The execute address of the activity
+        /// </summary>
+        Uri ReserveRoomExecuteAddress { get; }
     }
 }
