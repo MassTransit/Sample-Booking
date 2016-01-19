@@ -52,7 +52,7 @@
         InMemorySagaRepository<BookingRequestState> _bookingRequestSagaRepository;
         BookingRequestStateMachine _bookingRequestStateMachine;
 
-        protected override void ConfigureInputQueueEndpoint(IReceiveEndpointConfigurator configurator)
+        protected override void ConfigureInputQueueEndpoint(IInMemoryReceiveEndpointConfigurator configurator)
         {
             _bookingRequestSagaRepository = new InMemorySagaRepository<BookingRequestState>();
             _bookingRequestStateMachine = new BookingRequestStateMachine();

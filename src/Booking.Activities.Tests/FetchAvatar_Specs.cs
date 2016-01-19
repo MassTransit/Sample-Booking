@@ -47,7 +47,7 @@
         Task<ConsumeContext<RoutingSlipActivityCompleted>> _activityCompleted;
         RoutingSlip _routingSlip;
 
-        protected override void ConfigureInputQueueEndpoint(IReceiveEndpointConfigurator configurator)
+        protected override void ConfigureInputQueueEndpoint(IInMemoryReceiveEndpointConfigurator configurator)
         {
             _completed = Handled<RoutingSlipCompleted>(configurator);
 
